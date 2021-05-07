@@ -1,0 +1,41 @@
+div#project {
+    border: 2px #bbb solid;
+    border-radius: 5px;
+    width: 1200px;
+}
+
+div#project text {
+    font-family: Georgia, "Times New Roman", Serif;
+}
+
+div#input-section {
+    margin-top: 20px;
+}
+
+div#input-section > button {
+    height: 2em;
+    width: 3em;
+    margin: 0 10px;
+    font-family: Georgia, "Times New Roman", Serif;
+    font-size: 18px;
+    padding: 4px 8px;
+}
+
+div#input-section > button#generate-button {
+    width: 5.1em;
+}
+
+div#input-section > input#input-variable {
+    height: 2em;
+    padding: 2px 8px;
+    font-family: Georgia, "Times New Roman", Serif;
+    font-size: 18px;
+}
+
+div#input-section > button:first-child {
+    margin-left: 5px;
+}
+
+div#input-section > input {
+    margin-left: 10px;
+}
