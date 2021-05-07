@@ -6,7 +6,7 @@
 // Jim Zhang @ Github: https://github.com/BrandNewJimZhang
 // Jim Zhang's blog: http://jimzhang.me
 //
-// This project is based on JQuery 3.x.
+// This project is based on JQuery 3.6.0.
 //
 
 "use strict";
