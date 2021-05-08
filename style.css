@@ -39,3 +39,7 @@ div#input-section > button:first-child {
 div#input-section > input {
     margin-left: 10px;
 }
+
+div#hidden-container {
+    display: none;
+}
