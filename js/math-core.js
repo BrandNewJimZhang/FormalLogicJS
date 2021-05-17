@@ -12,7 +12,7 @@
 "use strict";
 
 $(function() {
-    function makeSVG(tag, attrs) {
+    function makeSVG(tag, attrs) { // svg + jQuery 有自身特性
         var element = document.createElementNS('http://www.w3.org/2000/svg', tag);
         for (var k in attrs)
             element.setAttribute(k, attrs[k]);
@@ -47,14 +47,14 @@ $(function() {
 
     function truth_table(input) {
         function init(arr, n) {
-            for(let i=0;i<n;i++) arr[i]=0;
+            for(let i=0; i<n; i++) arr[i]=0;
         }
 
-        var value=new Array();
+        var value = new Array();
         init(value, 50);
-        var flag=1;
+        var flag = 1;
         var input;
-        var table="<table class=\'tg\'><thead><tr>";
+        var table = "<table class=\'tg\'><thead><tr>";
         var box, len_val=0, len_input=0;
 
         function is_alpha(ch){
@@ -66,7 +66,7 @@ $(function() {
 
         function in_value(ch){
             for(let i=0;i<len_val;i++){
-                if(value[i]==ch){
+                if (value[i]==ch) {
                     return true;
                 }
             }
@@ -74,7 +74,7 @@ $(function() {
         }
 
         var ans=new Array();
-        init(ans,50);
+        init(ans, 50);
         function rang(num){
             if(num>=len_val){
                 table+="<tr>"
@@ -212,18 +212,9 @@ $(function() {
             document.getElementById("truth-table").innerText="There is no input";
             return;
         }
-        box=[...input];//['p','&','q']
-        /*var box1=[];
-        var len=box.length;
-        for(let i=0;i<len;i++){
-            if(box[i]!=' ')box1.push(box[i])
-        }*/
-
+        box = [...input];//['p','&','q']
         
-        //document.getElementById("display").innerText=box1;
-        //return;
-        
-        len_input=box.length;//3
+        len_input = box.length;//3
 
         for(let i=0;i<len_input;i++){
             if(is_alpha(box[i])&&(!in_value(box[i]))){
@@ -482,6 +473,13 @@ $(function() {
     });
     
     divinput.append(item);
+
+    $("table").tablecloth({
+        theme: "paper",
+        striped: true,
+        sortable: true,
+        condensed: true
+    });
 });
 
 
