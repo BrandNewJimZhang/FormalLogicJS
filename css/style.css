@@ -62,26 +62,35 @@ div#truth-table {
     position: absolute;
     bottom: 0;
     background: #fff;
+    padding: .1em 0.3em;
+    margin: 1.2em 0.6em;
+    border: 1px #ddd solid;
+    border-radius: 5px;
 }
 
 table.tg {
-    vertical-align: top;
-    max-width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
     border-collapse: collapse;
     border-spacing: 0;
+    max-width: 100%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
 }
 
 table th {
-    font-size: 11px;
-    text-align: left;
-    background: #f2f0e6;
+    border-top: 0;
+    border-bottom: 2px solid #f4f4f4;
+    vertical-align: bottom;
 }
 
+table td {
+    border-top: 1px solid #f4f4f4;
+}
+
+
 table th, table td {
-    padding: 6px 12px;
-    border: 1px solid #d9d7ce;
+    padding: 8px;
+    line-height: 0.9;
+    text-align: center;
 }
 
 div#hidden-container {
