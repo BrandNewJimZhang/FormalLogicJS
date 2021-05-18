@@ -473,9 +473,12 @@ $(function() {
     }).click(function () {
         var text = $('#hidden-container').text();
         truth_table(text);
+        $('div#truth-table').fadeIn(800);
     });
     
     divinput.append(item);
+
+    draggable('table.tg');
 });
 
 

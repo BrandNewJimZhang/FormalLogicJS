@@ -57,6 +57,33 @@ div#input-section > button#generate-button, div#input-section > button#truth-tab
     margin-top: .6em;
 }
 
+div#truth-table {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+}
+
+table.tg {
+    vertical-align: top;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table th {
+    font-size: 11px;
+    text-align: left;
+    background: #f2f0e6;
+}
+
+table th, table td {
+    padding: 6px 12px;
+    border: 1px solid #d9d7ce;
+}
+
 div#hidden-container {
     display: none;
 }
