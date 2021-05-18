@@ -243,20 +243,20 @@ $(function() {
     var mubu = makeSVG('svg', {
         id: 'mubu',
         version: '1.1',
-        height: 400,
-        width: 1200,
-        viewBox: "0 0 1200 400",
+        height: $(document).height(),
+        width: $(document).width(),
     });
     $('div#project').append(mubu);
 
     // 加点
     mubu = $('svg#mubu');
-    for (var i=0; i<=(mubu.attr('width')/10); i++) {
-        for (var j=0; j<=(mubu.attr('height')/10); j++) {
+    var interval = 20;
+    for (var i=0; i<=(mubu.attr('width')/interval); i++) {
+        for (var j=0; j<=(mubu.attr('height')/interval); j++) {
             var circle = makeSVG('circle', {
-                cx: 10*i,
-                cy: 10*j,
-                r: 0.5,
+                cx: interval*i,
+                cy: interval*j,
+                r: .75,
                 color: '#ddd',
             });
             mubu.append(circle);
@@ -265,14 +265,14 @@ $(function() {
 
     // 用户控制区布局
     var divinput = $('div#input-section');
-
+    var divbutton = $("<div></div>").attr('id', 'operator-button');
+    
     // 联结词按钮区
-    var l_operators = ['∧', '∨', '~', '→', '↔']
-
+    var l_operators = ['∧', '∨', '~', '→', '↔'];
     for (var item in l_operators) {
-        var string = "<button>"+l_operators[item]+"</button>";
-        divinput.append(
-            $(string).attr({
+        var string = "<button></button>";
+        divbutton.append(
+            $(string).text(l_operators[item]).attr({
                 class: 'operator',
                 id: 'operator'+l_operators[item]
             })
@@ -280,7 +280,7 @@ $(function() {
     };
     
     // 输入变元
-    divinput.append(
+    divinput.append(divbutton, 
         $("<input>").attr({
             id: 'input-variable',
             type: 'text',

@@ -1,6 +1,11 @@
+body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
 div#project {
-    border: 2px #bbb solid;
-    border-radius: 5px;
+    position: absolute;
     width: 1200px;
 }
 
@@ -9,69 +14,49 @@ div#project text {
 }
 
 div#input-section {
-    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+    opacity: .8;
+    width: 200px;
+    float: right;
+    padding: 20px 30px;
+    background: #aaa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
 }
 
-div#input-section > button {
+div#input-section > div#operator-button {
+    width: -webkit-fill-available;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: .6em;
+    grid-row-gap: .6em;
+    justify-content: center;
+    padding-bottom: 1em;
+}
+
+div#input-section > div#operator-button > button.operator, div#input-section > button#generate-button, div#input-section > button#truth-table-button {
     height: 2em;
-    width: 3em;
-    margin: 0 10px;
+    width: -webkit-fill-available;
     font-family: Georgia, "Times New Roman", Serif;
     font-size: 18px;
     padding: 4px 8px;
 }
 
-div#input-section > button#generate-button {
-    width: 5.1em;
-}
-
-div#input-section > button#truth-table-button {
-    width: 12em;
-}
-
 div#input-section > input#input-variable {
     height: 2em;
+    width: -webkit-fill-available;
     padding: 2px 8px;
     font-family: Georgia, "Times New Roman", Serif;
     font-size: 18px;
 }
 
-div#input-section > button:first-child {
-    margin-left: 5px;
-}
-
-div#input-section > input {
-    margin-left: 10px;
+div#input-section > button#generate-button, div#input-section > button#truth-table-button {
+    margin-top: .6em;
 }
 
 div#hidden-container {
     display: none;
 }
-
-
-/*
-    Style of the truth table
-    Inspired by https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l
-*/
-
-/*
-div#truth-table > table {
-    border-collapse: collapse;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-}
-
-div#truth-table > table th {
-    font-family: Lato-Bold;
-    font-size: 18px;
-    color: #fff;
-    line-height: 1.4;
-    background-color: #6c7ae0;
-    padding: 18px 0 18px 10px;
-    font-weight: unset;
-    text-align: left;
-}
-
-*/
