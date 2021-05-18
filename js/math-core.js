@@ -481,5 +481,3 @@ $(function() {
     draggable('table.tg');
 });
 
-
-
