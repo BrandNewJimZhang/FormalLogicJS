@@ -17,7 +17,7 @@ $(function() {
     });
 
     function makeSVG(tag, attrs) { // svg + jQuery 有自身特性
-        var element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+        var element = document.createElementNS("http://www.w3.org/2000/svg", tag);
         for (var k in attrs)
             element.setAttribute(k, attrs[k]);
         return element;
@@ -58,11 +58,11 @@ $(function() {
         init(value, 50);
         var flag = 1;
         var input;
-        var table = "<table class=\'tg\'><thead><tr>";
+        var table = "<table class=\"tg\"><thead><tr>";
         var box, len_val=0, len_input=0;
 
         function is_alpha(ch){
-            if(!(ch=='∧'||ch=='∨'||ch=='('||ch==')'||ch=='~'||ch=='→'||ch=='↔')){
+            if(!(ch=="∧"||ch=="∨"||ch=="("||ch==")"||ch=="~"||ch=="→"||ch=="↔")){
                 return true;
             }
             return false;
@@ -83,7 +83,7 @@ $(function() {
             if(num>=len_val){
                 table+="<tr>"
                 for(let i=0;i<len_val;i++){
-                    table+="<td class=\'tg-0lax\'>";
+                    table+="<td class=\"tg-0lax\">";
                     if(ans[i]==1){
                         table+="T";
                     }
@@ -97,7 +97,7 @@ $(function() {
                     table+="T";
                 }
                 else{
-                    table+='F';
+                    table+="F";
                 }
                 table+="</td></tr>"
                 return ;
@@ -123,50 +123,50 @@ $(function() {
             for(let i=0;i<len_val;i++){
                 if(value[i]==ch){
                     if(ans[i]==1){
-                        return '1';
+                        return "1";
                     }
                     else{
-                        return '0';
+                        return "0";
                     }
                 }
             }
         }
         function calculate(){
             if(cal[top_cal]=="~"){
-                if(num[top_num]=='1'){
-                    num[top_num]='0';
+                if(num[top_num]=="1"){
+                    num[top_num]="0";
                 }
                 else{
-                    num[top_num]='1';
+                    num[top_num]="1";
                 }
             }
-            else if(cal[top_cal]=='∧'){
+            else if(cal[top_cal]=="∧"){
                 let ch1=num[top_num];
                 let ch2=num[top_num-1];
                 top_num--;
-                if(ch1=='1'&&ch2=='1') num[top_num]='1';
-                else num[top_num]='0';
+                if(ch1=="1"&&ch2=="1") num[top_num]="1";
+                else num[top_num]="0";
             }
-            else if(cal[top_cal]=='∨'){
+            else if(cal[top_cal]=="∨"){
                 let ch1=num[top_num];
                 let ch2=num[top_num-1];
                 top_num--;
-                if(ch1=='0'&&ch2=='0')num[top_num]='0';
-                else num[top_num]='1';
+                if(ch1=="0"&&ch2=="0")num[top_num]="0";
+                else num[top_num]="1";
             }
-            else if(cal[top_cal]=='→'){
+            else if(cal[top_cal]=="→"){
                 let ch1=num[top_num];
                 let ch2=num[top_num-1];
                 top_num--;
-                if(ch1=='0'&&ch2=='1')num[top_num]='0';
-                else num[top_num]='1';
+                if(ch1=="0"&&ch2=="1")num[top_num]="0";
+                else num[top_num]="1";
             }
-            else if(cal[top_cal]=='↔'){
+            else if(cal[top_cal]=="↔"){
                 let ch1=num[top_num];
                 let ch2=num[top_num-1];
                 top_num--;
-                if((ch1=='0'&&ch2=='0')||(ch1=='1'&&ch2=='1'))num[top_num]='1';
-                else num[top_num]='0';
+                if((ch1=="0"&&ch2=="0")||(ch1=="1"&&ch2=="1"))num[top_num]="1";
+                else num[top_num]="0";
             }
             top_cal--;
         }
@@ -207,7 +207,7 @@ $(function() {
                 calculate();
             }
             if(!(top_num==0&&top_cal==-1))flag=0;
-            if(num[0]=='1')return true;
+            if(num[0]=="1")return true;
             return false;
         }
 
@@ -216,7 +216,7 @@ $(function() {
             document.getElementById("truth-table").innerText="There is no input";
             return;
         }
-        box = [...input];//['p','&','q']
+        box = [...input];//["p","&","q"]
         
         len_input = box.length;//3
 
@@ -224,7 +224,7 @@ $(function() {
             if(is_alpha(box[i])&&(!in_value(box[i]))){
                 value[len_val]=box[i];
                 len_val++;
-                table+="<th class=\'tg-l6li\'>"
+                table+="<th class=\"tg-l6li\">"
                 table=(table+box[i]);
                 table+="</th>"
             }
@@ -244,41 +244,40 @@ $(function() {
         }
     };
 
-    var mubu = makeSVG('svg', {
-        id: 'mubu',
-        version: '1.1',
+    var mubu = makeSVG("svg", {
+        id: "mubu",
+        version: "1.1",
         height: $(document).height(),
         width: $(document).width(),
     });
-    $('div#project').append(mubu);
+    $("div#project").append(mubu);
 
     // 加点
-    mubu = $('svg#mubu');
+    mubu = $("svg#mubu");
     var interval = 20;
-    for (var i=0; i<=(mubu.attr('width')/interval); i++) {
-        for (var j=0; j<=(mubu.attr('height')/interval); j++) {
-            var circle = makeSVG('circle', {
+    for (var i=0; i<=(mubu.attr("width")/interval); i++) {
+        for (var j=0; j<=(mubu.attr("height")/interval); j++) {
+            var circle = makeSVG("circle", {
                 cx: interval*i,
                 cy: interval*j,
                 r: .75,
-                color: '#ddd',
+                color: "#ddd",
             });
             mubu.append(circle);
         };
     };
 
     // 用户控制区布局
-    var divinput = $('div#input-section');
-    var divbutton = $("<div></div>").attr('id', 'operator-button');
+    var divinput = $("div#input-section");
+    var divbutton = $("<div></div>").attr("id", "operator-button");
     
     // 联结词按钮区
-    var l_operators = ['∧', '∨', '~', '→', '↔'];
+    var l_operators = ["∧", "∨", "~", "→", "↔"];
     for (var item in l_operators) {
-        var string = "<button></button>";
         divbutton.append(
-            $(string).text(l_operators[item]).attr({
-                class: 'operator',
-                id: 'operator'+l_operators[item]
+            $("<button></button>").text(l_operators[item]).attr({
+                class: "operator",
+                id: "operator"+l_operators[item]
             })
         );
     };
@@ -286,198 +285,201 @@ $(function() {
     // 输入变元
     divinput.append(divbutton, 
         $("<input>").attr({
-            id: 'input-variable',
-            type: 'text',
+            id: "input-variable",
+            type: "text",
         })
     );
 
     var l_items = [];
-    item = $("<button>Generate</button>").attr({
-        id: 'generate-button',
+    item = $("<button></button>").text("Generate").attr({
+        id: "generate-button",
     }).click(function split() {
         var input = $("#input-variable")[0].value;
-        var box = [...input]; //['p','&','q']
+        var box = [...input]; //["p","&","q"]
         var box1 = [];
         var len = box.length;
         for (let i=0; i<len; i++) {
-            if(box[i]!=' ') box1.push(box[i])
+            if(box[i]!=" ") box1.push(box[i])
         }
         
-        var mubu = $('svg#mubu');
+        var mubu = $("svg#mubu");
         for (var item in box1) {
-            var text = $(makeSVG('text', {
+            var text = $(makeSVG("text", {
                 x: 15,
                 y: 40*item + 30,
-                fill: 'transparent',
+                fill: "transparent",
             })).text(box1[item]);
             mubu.append(text);
-            mubu.append($(makeSVG('rect', {
-                x: 10,
-                y: 40*item + 10,
-                width: text.get(0).getBBox().width+10,
-                height: 30,
-                stroke: '#aaa',
-                fill: '#fff',
-                rx: 5,
-                ry: 5,
-                text: box1[item],
-            })));
-            var text = $(makeSVG('text', {
-                x: 15,
-                y: 40*item + 30,
-                fill: '#000',
-            })).text(box1[item]);
-            mubu.append(text);
-            
+            mubu.append(
+                $(makeSVG("rect", {
+                    x: 10,
+                    y: 40*item + 10,
+                    width: text.get(0).getBBox().width+10,
+                    height: 30,
+                    stroke: "#aaa",
+                    fill: "#fff",
+                    rx: 5,
+                    ry: 5,
+                    text: box1[item],
+                })),
+                $(makeSVG("text", {
+                    x: 15,
+                    y: 40*item + 30,
+                    fill: "#000",
+                })).text(box1[item])
+            );
         }
     });
     divinput.append(item);
 
     mubu.click(function (e) {
-        if (e.target.tagName !== 'rect') {
-            $('rect').attr('stroke', '#aaa');
+        if (e.target.tagName !== "rect") {
+            $("rect").attr("stroke", "#aaa");
             l_items = [];
         }     
         else {
-            if ($(e.target).attr('stroke') == 'red') {
-                $(e.target).attr('stroke', '#aaa');
+            if ($(e.target).attr("stroke") == "red") {
+                $(e.target).attr("stroke", "#aaa");
             }
             else {
-                $(e.target).attr('stroke', 'red');
-                l_items.push([e.target, $(e.target).attr('text')])
+                $(e.target).attr("stroke", "red");
+                l_items.push([e.target, $(e.target).attr("text")])
             }
         }
     });
 
-    $('.operator').click(function (e) {
-        if (l_items.length == 1 && e.target.id == 'operator~') {
+    $(".operator").click(function (e) {
+        if (l_items.length == 1 && e.target.id == "operator~") {
             var temp = l_items.pop()
-            l_items.push('(~'+temp[1]+')')
-            var line = makeSVG('line', {
-                x1: parseInt($(temp[0]).attr('x'))+parseInt($(temp[0]).attr('width')),
-                x2: parseInt($(temp[0]).attr('x'))+parseInt($(temp[0]).attr('width'))+100,
-                y1: parseInt($(temp[0]).attr('y'))+parseInt($(temp[0]).attr('height')/2),
-                y2: parseInt($(temp[0]).attr('y'))+parseInt($(temp[0]).attr('height')/2),
-                stroke: '#000'
+            l_items.push("(~"+temp[1]+")")
+            var line = makeSVG("line", {
+                x1: parseInt($(temp[0]).attr("x"))+parseInt($(temp[0]).attr("width")),
+                x2: parseInt($(temp[0]).attr("x"))+parseInt($(temp[0]).attr("width"))+100,
+                y1: parseInt($(temp[0]).attr("y"))+parseInt($(temp[0]).attr("height")/2),
+                y2: parseInt($(temp[0]).attr("y"))+parseInt($(temp[0]).attr("height")/2),
+                stroke: "#000"
             })
-            var raw_text = '(~'+temp[1]+')';
-            var text = $(makeSVG('text', {
+            var raw_text = "(~"+temp[1]+")";
+            var text = $(makeSVG("text", {
                 x: 15,
                 y: 40*item + 30,
-                fill: 'transparent',
+                fill: "transparent",
             })).text(raw_text);
             mubu.append(text);
-            mubu.append($(makeSVG('rect', {
-                x: parseInt($(temp[0]).attr('x'))+parseInt($(temp[0]).attr('width'))+100,
-                y: parseInt($(temp[0]).attr('y')),
+            mubu.append($(makeSVG("rect", {
+                x: parseInt($(temp[0]).attr("x"))+parseInt($(temp[0]).attr("width"))+100,
+                y: parseInt($(temp[0]).attr("y")),
                 width: text.get(0).getBBox().width+10,
                 height: 30,
-                stroke: '#aaa',
-                fill: '#fff',
+                stroke: "#aaa",
+                fill: "#fff",
                 rx: 5,
                 ry: 5,
                 text: raw_text,
             })));
-            var text = $(makeSVG('text', {
-                x: parseInt($(temp[0]).attr('x'))+parseInt($(temp[0]).attr('width'))+105,
-                y: parseInt($(temp[0]).attr('y')) + 20,
-                fill: '#000',
+            var text = $(makeSVG("text", {
+                x: parseInt($(temp[0]).attr("x"))+parseInt($(temp[0]).attr("width"))+105,
+                y: parseInt($(temp[0]).attr("y")) + 20,
+                fill: "#000",
             })).text(raw_text);
-            console.log(raw_text)
-            mubu.append(text);
-            mubu.append(line);
-            mubu.append(rectbox);
+            mubu.append(text, line, rectbox);
         }
-        else if (l_items.length == 2 && e.target.id != 'operator~') {
+        else if (l_items.length == 2 && e.target.id != "operator~") {
             var second = l_items.pop();
             var first = l_items.pop();
-            var raw_text = '('+first[1]+e.target.id.charAt(e.target.id.length-1)+second[1]+')';
+            var raw_text = "("+first[1]+e.target.id.charAt(e.target.id.length-1)+second[1]+")";
             l_items.push(raw_text);
-            var line1 = makeSVG('line', {
-                x1: parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width')),
+            var line1 = makeSVG("line", {
+                x1: parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width")),
                 x2: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40),
-                y1: parseInt($(first[0]).attr('y'))+parseInt($(first[0]).attr('height')/2),
-                y2: parseInt($(first[0]).attr('y'))+parseInt($(first[0]).attr('height')/2),
-                stroke: '#000'
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40),
+                y1: parseInt($(first[0]).attr("y"))+parseInt($(first[0]).attr("height")/2),
+                y2: parseInt($(first[0]).attr("y"))+parseInt($(first[0]).attr("height")/2),
+                stroke: "#000"
             });
-            var line2 = makeSVG('line', {
-                x1: parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width')),
+            var line2 = makeSVG("line", {
+                x1: parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width")),
                 x2: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40),
-                y1: parseInt($(second[0]).attr('y'))+parseInt($(second[0]).attr('height')/2),
-                y2: parseInt($(second[0]).attr('y'))+parseInt($(second[0]).attr('height')/2),
-                stroke: '#000'
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40),
+                y1: parseInt($(second[0]).attr("y"))+parseInt($(second[0]).attr("height")/2),
+                y2: parseInt($(second[0]).attr("y"))+parseInt($(second[0]).attr("height")/2),
+                stroke: "#000"
             })
-            var line_together_h = makeSVG('line', {
+            var line_together_h = makeSVG("line", {
                 x1: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40),
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40),
                 x2: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40)+60,
-                y1: ((parseInt($(first[0]).attr('y'))+parseInt($(first[0]).attr('height')/2))+(parseInt($(second[0]).attr('y'))+parseInt($(second[0]).attr('height')/2)))/2,
-                y2: ((parseInt($(first[0]).attr('y'))+parseInt($(first[0]).attr('height')/2))+(parseInt($(second[0]).attr('y'))+parseInt($(second[0]).attr('height')/2)))/2,
-                stroke: '#000'
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40)+60,
+                y1: ((parseInt($(first[0]).attr("y"))+parseInt($(first[0]).attr("height")/2))+(parseInt($(second[0]).attr("y"))+parseInt($(second[0]).attr("height")/2)))/2,
+                y2: ((parseInt($(first[0]).attr("y"))+parseInt($(first[0]).attr("height")/2))+(parseInt($(second[0]).attr("y"))+parseInt($(second[0]).attr("height")/2)))/2,
+                stroke: "#000"
             })
-            var line_together_v = makeSVG('line', {
+            var line_together_v = makeSVG("line", {
                 x1: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40),
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40),
                 x2: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40),
-                y1: parseInt($(first[0]).attr('y'))+parseInt($(first[0]).attr('height')/2),
-                y2: parseInt($(second[0]).attr('y'))+parseInt($(second[0]).attr('height')/2),
-                stroke: '#000'
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40),
+                y1: parseInt($(first[0]).attr("y"))+parseInt($(first[0]).attr("height")/2),
+                y2: parseInt($(second[0]).attr("y"))+parseInt($(second[0]).attr("height")/2),
+                stroke: "#000"
             });
             
-            var text = $(makeSVG('text', {
+            var text = $(makeSVG("text", {
                 x: 15,
                 y: 40*item + 30,
-                fill: 'transparent',
+                fill: "transparent",
             })).text(raw_text);
 
             mubu.append(text);
 
-            var rectbox = $(makeSVG('rect', {
+            var rectbox = $(makeSVG("rect", {
                 x: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40)+60,
-                y: ((parseInt($(first[0]).attr('y'))+parseInt($(second[0]).attr('y'))))/2,
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40)+60,
+                y: ((parseInt($(first[0]).attr("y"))+parseInt($(second[0]).attr("y"))))/2,
                 width: text.get(0).getBBox().width+10,
                 height: 30,
-                stroke: '#aaa',
-                fill: '#fff',
+                stroke: "#aaa",
+                fill: "#fff",
                 rx: 5,
                 ry: 5,
                 text: raw_text,
             }));
 
-            var text = $(makeSVG('text', {
+            var text = $(makeSVG("text", {
                 x: Math.max(
-                    parseInt($(first[0]).attr('x'))+parseInt($(first[0]).attr('width'))+40,
-                    parseInt($(second[0]).attr('x'))+parseInt($(second[0]).attr('width'))+40)+65,
-                y: ((parseInt($(first[0]).attr('y'))+parseInt($(second[0]).attr('y'))))/2 + 20,
-                fill: '#000',
+                    parseInt($(first[0]).attr("x"))+parseInt($(first[0]).attr("width"))+40,
+                    parseInt($(second[0]).attr("x"))+parseInt($(second[0]).attr("width"))+40)+65,
+                y: ((parseInt($(first[0]).attr("y"))+parseInt($(second[0]).attr("y"))))/2 + 20,
+                fill: "#000",
             })).text(raw_text);
             mubu.append(rectbox, text, line1, line2, line_together_h, line_together_v);
-            $('#hidden-container').text(raw_text);
+            $("#hidden-container").text(raw_text);
         };
     });
 
     item = $("<button>Generate truth table</button>").attr({
-        id: 'truth-table-button',
+        id: "truth-table-button",
     }).click(function () {
-        var text = $('#hidden-container').text();
+        var text = $("#hidden-container").text();
         truth_table(text);
-        $('div#truth-table').fadeIn(800);
+        $("div#truth-table").fadeIn(800);
     });
     
     divinput.append(item);
 
-    draggable('table.tg');
+    // 样式区
+    draggable("table.tg");
+    var button = $('button#truth-table-button');
+    if (button.width() < 180) {
+        button.css('height', '3em');
+    };
+
 });
 

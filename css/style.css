@@ -6,7 +6,6 @@ body {
 
 div#project {
     position: absolute;
-    width: 1200px;
 }
 
 div#project text {
@@ -17,7 +16,7 @@ div#input-section {
     position: relative;
     z-index: 1;
     opacity: .8;
-    width: 200px;
+    width: min(30%, 200px);
     float: right;
     padding: 20px 30px;
     background: #aaa;
