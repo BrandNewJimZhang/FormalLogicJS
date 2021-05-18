@@ -12,6 +12,10 @@
 "use strict";
 
 $(function() {
+    $(this).bind("contextmenu", function(e) { // Disable right click.
+        e.preventDefault();
+    });
+
     function makeSVG(tag, attrs) { // svg + jQuery 有自身特性
         var element = document.createElementNS('http://www.w3.org/2000/svg', tag);
         for (var k in attrs)
@@ -227,14 +231,14 @@ $(function() {
             
         }
         table+="<th>Result</th>"
-        table+="</tr></thead><tbody>"//add body
+        table+="</tr></thead><tbody>" // add body
 
         rang(0);
 
-        if(flag==0){
+        if (flag==0) {
             document.getElementById("truth-table").innerText="Invalid input"
         }
-        else{
+        else {
             table+="</table>"
             document.getElementById("truth-table").innerHTML=table;
         }
@@ -468,18 +472,10 @@ $(function() {
         id: 'truth-table-button',
     }).click(function () {
         var text = $('#hidden-container').text();
-        console.log(text);
         truth_table(text);
     });
     
     divinput.append(item);
-
-    $("table").tablecloth({
-        theme: "paper",
-        striped: true,
-        sortable: true,
-        condensed: true
-    });
 });
 
 
