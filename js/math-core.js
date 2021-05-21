@@ -49,10 +49,10 @@ $(function() {
         });
     };
 
-    function truth_table(input) {
+    function truth_table(input) { // 真值表生成函数
         function init(arr, n) {
             for(let i=0; i<n; i++) arr[i]=0;
-        }
+        } // 初始化数组
 
         var value = new Array();
         init(value, 50);
@@ -61,14 +61,14 @@ $(function() {
         var table = "<table class=\"tg\"><thead><tr>";
         var box, len_val=0, len_input=0;
 
-        function is_alpha(ch){
+        function is_alpha(ch){ // 判断字符是否是字母 p，q，r 等
             if(!(ch=="∧"||ch=="∨"||ch=="("||ch==")"||ch=="~"||ch=="→"||ch=="↔")){
                 return true;
             }
             return false;
         }
 
-        function in_value(ch){
+        function in_value(ch){ // 字母ch在字母表中
             for(let i=0;i<len_val;i++){
                 if (value[i]==ch) {
                     return true;
@@ -77,10 +77,10 @@ $(function() {
             return false;
         }
 
-        var ans=new Array();
+        var ans=new Array(); // 储存每一个排列
         init(ans, 50);
-        function rang(num){
-            if(num>=len_val){
+        function rang(num){ // 递归函数，生成FFFF到TTTT的排列
+            if(num>=len_val){ // 递归最底层，已经生成了TF全排列在数组ans中
                 table+="<tr>"
                 for(let i=0;i<len_val;i++){
                     table+="<td class=\"tg-0lax\">";
@@ -93,7 +93,7 @@ $(function() {
                     table+="</td>";
                 }
                 table+="<td>";
-                if(R()==true){
+                if(R()==true){ // 在当前排列调用函数R，计算当前排列的真值
                     table+="T";
                 }
                 else{
@@ -105,21 +105,30 @@ $(function() {
             ans[num]=0;
             rang(num+1);
             ans[num]=1;
-            rang(num+1);
+            rang(num+1); // 递归步骤
             return;
         }
 
-        var cal = new Array();
-        var num = new Array();
-        var top_num, top_cal;
+        //
+        var cal = new Array(); // 逻辑栈，储存运算符号
+        var num = new Array(); // 字母栈，储存字母
+        var top_num, top_cal; // 两个栈的栈顶位置
 
-        function in_var(ch){
+        function in_var(ch){ // 判断字符ch是否在字母表中，跟上面的in_value函数重复了
             for(let i=0;i<len_val;i++){
                 if(value[i]==ch)return true;
             }
             return false;
         }
-        function find_var(ch){
+        function find_var(ch){ // 计算真值的时候，找到字母ch对应的取值
+            /*
+                例如value[]={p,q,r}
+                ans[]={1,0,1}
+                输入ch="q"
+                返回"0"
+                输入ch="r"
+                返回"1"
+            */
             for(let i=0;i<len_val;i++){
                 if(value[i]==ch){
                     if(ans[i]==1){
@@ -131,7 +140,8 @@ $(function() {
                 }
             }
         }
-        function calculate(){
+
+        function calculate(){ // 取运算栈的栈顶运算符进行运算
             if(cal[top_cal]=="~"){
                 if(num[top_num]=="1"){
                     num[top_num]="0";
@@ -168,35 +178,35 @@ $(function() {
                 if((ch1=="0"&&ch2=="0")||(ch1=="1"&&ch2=="1"))num[top_num]="1";
                 else num[top_num]="0";
             }
-            top_cal--;
+            top_cal--; // 运算栈栈顶位置-1
         }
-        function compare(a,b){
+        function compare(a,b){ // 比较运算符a和b的优先级，a优于b返回true
             if(b=="(") return true;
             if(a=="~"&&b!="~") return true;
             return false;
         }
 
-        function R(){
-            //return true;
+        function R(){ // 计算真值的函数，即求在当前排列下逻辑表达式的真假
             init(cal, 200);
             init(num, 200);
-            top_cal = -1; top_num = -1;
-            for(let i=0;i<len_input;i++){
+            top_cal = -1; top_num = -1; // 栈和栈顶初始化
+            for(let i=0;i<len_input;i++){ // 遍历{"p","&","q"}
+                // 如果是字母，入字母栈
                 if(in_var(box[i]))num[++top_num]=find_var(box[i]);
-                else{
-                    if(box[i]==")"){
+                else{ // 如果是运算符
+                    if(box[i]==")"){ // 右括号优先级最低，循环运算，直到运算栈的栈顶是左括号
                         while (cal[top_cal]!="(") {
-                            calculate();
+                            calculate(); // 取运算符栈顶进行运算
                         }top_cal--;
                     }
-                    else if(box[i]=="("){
+                    else if(box[i]=="("){ // 左括号入运算栈
                         cal[++top_cal]=box[i];
                     }
-                    else if(top_cal==-1 || compare(box[i],cal[top_cal])){
+                    else if(top_cal==-1 || compare(box[i],cal[top_cal])){ // 如果当前运算符比栈顶运算符优先级高，入栈
                         cal[++top_cal]=box[i];
                     }
                     else{
-                        while(!(top_cal==-1 || compare(box[i],cal[top_cal]))){
+                        while(!(top_cal==-1 || compare(box[i],cal[top_cal]))){ // 如果不满足就取栈顶元素进行运算
                             calculate();
                         }
                         cal[++top_cal]=box[i];
@@ -206,8 +216,8 @@ $(function() {
             while(top_cal!=-1){
                 calculate();
             }
-            if(!(top_num==0&&top_cal==-1))flag=0;
-            if(num[0]=="1")return true;
+            if(!(top_num==0&&top_cal==-1))flag=0; // flag的设置为了判断非法输入
+            if(num[0]=="1")return true; // 01栈最后的栈顶值即为计算的真值
             return false;
         }
 
@@ -216,11 +226,11 @@ $(function() {
             document.getElementById("truth-table").innerText="There is no input";
             return;
         }
-        box = [...input];//["p","&","q"]
+        box = [...input]; // ["p","&","q"]
         
-        len_input = box.length;//3
+        len_input = box.length; // 3
 
-        for(let i=0;i<len_input;i++){
+        for(let i=0;i<len_input;i++){ // 添加表头
             if(is_alpha(box[i])&&(!in_value(box[i]))){
                 value[len_val]=box[i];
                 len_val++;
@@ -233,7 +243,7 @@ $(function() {
         table+="<th>Result</th>"
         table+="</tr></thead><tbody>" // add body
 
-        rang(0);
+        rang(0); // 递归，生成排列，计算真值，添加到表中
 
         if (flag==0) {
             document.getElementById("truth-table").innerText="Invalid input"
@@ -274,8 +284,9 @@ $(function() {
     // 联结词按钮区
     var l_operators = ["∧", "∨", "~", "→", "↔"];
     for (var item in l_operators) {
+        var string = "<button></button>";
         divbutton.append(
-            $("<button></button>").text(l_operators[item]).attr({
+            $(string).text(l_operators[item]).attr({
                 class: "operator",
                 id: "operator"+l_operators[item]
             })
@@ -291,7 +302,7 @@ $(function() {
     );
 
     var l_items = [];
-    item = $("<button></button>").text("Generate").attr({
+    item = $("<button>Generate</button>").attr({
         id: "generate-button",
     }).click(function split() {
         var input = $("#input-variable")[0].value;
@@ -310,24 +321,24 @@ $(function() {
                 fill: "transparent",
             })).text(box1[item]);
             mubu.append(text);
-            mubu.append(
-                $(makeSVG("rect", {
-                    x: 10,
-                    y: 40*item + 10,
-                    width: text.get(0).getBBox().width+10,
-                    height: 30,
-                    stroke: "#aaa",
-                    fill: "#fff",
-                    rx: 5,
-                    ry: 5,
-                    text: box1[item],
-                })),
-                $(makeSVG("text", {
-                    x: 15,
-                    y: 40*item + 30,
-                    fill: "#000",
-                })).text(box1[item])
-            );
+            mubu.append($(makeSVG("rect", {
+                x: 10,
+                y: 40*item + 10,
+                width: text.get(0).getBBox().width+10,
+                height: 30,
+                stroke: "#aaa",
+                fill: "#fff",
+                rx: 5,
+                ry: 5,
+                text: box1[item],
+            })));
+            var text = $(makeSVG("text", {
+                x: 15,
+                y: 40*item + 30,
+                fill: "#000",
+            })).text(box1[item]);
+            mubu.append(text);
+            
         }
     });
     divinput.append(item);
@@ -382,7 +393,10 @@ $(function() {
                 y: parseInt($(temp[0]).attr("y")) + 20,
                 fill: "#000",
             })).text(raw_text);
-            mubu.append(text, line, rectbox);
+            console.log(raw_text)
+            mubu.append(text);
+            mubu.append(line);
+            mubu.append(rectbox);
         }
         else if (l_items.length == 2 && e.target.id != "operator~") {
             var second = l_items.pop();
@@ -474,12 +488,6 @@ $(function() {
     
     divinput.append(item);
 
-    // 样式区
     draggable("table.tg");
-    var button = $('button#truth-table-button');
-    if (button.width() < 180) {
-        button.css('height', '3em');
-    };
-
 });
 
