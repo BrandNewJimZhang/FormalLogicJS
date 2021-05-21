@@ -18,8 +18,7 @@ $(function() {
 
     function makeSVG(tag, attrs) { // svg + jQuery 有自身特性
         var element = document.createElementNS("http://www.w3.org/2000/svg", tag);
-        for (var k in attrs)
-            element.setAttribute(k, attrs[k]);
+        for (var k in attrs) element.setAttribute(k, attrs[k]);
         return element;
     }
 
@@ -50,44 +49,28 @@ $(function() {
     };
 
     function truth_table(input) { // 真值表生成函数
-        function init(arr, n) {
-            for(let i=0; i<n; i++) arr[i]=0;
-        } // 初始化数组
-
-        var value = new Array();
-        init(value, 50);
+        var value = new Array(50).fill(0);
         var flag = 1;
-        var input;
         var table = "<table class=\"tg\"><thead><tr>";
-        var box, len_val=0, len_input=0;
+        // var table = $("<table></table>")
+        var box, input, len_val = 0, len_input = 0;
+        var operator = ["∧", "∨", "(", ")", "~", "→", "↔"];
 
-        function is_alpha(ch){ // 判断字符是否是字母 p，q，r 等
-            if(!(ch=="∧"||ch=="∨"||ch=="("||ch==")"||ch=="~"||ch=="→"||ch=="↔")){
-                return true;
-            }
-            return false;
+        function is_alpha(char) { // 判断字符是否是字母 p，q，r 等
+            return operator.includes(char)? false : true;
         }
 
-        function in_value(ch){ // 字母ch在字母表中
-            for(let i=0;i<len_val;i++){
-                if (value[i]==ch) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        var ans = new Array(50).fill(0); // 储存每一个排列
 
-        var ans=new Array(); // 储存每一个排列
-        init(ans, 50);
-        function rang(num){ // 递归函数，生成FFFF到TTTT的排列
-            if(num>=len_val){ // 递归最底层，已经生成了TF全排列在数组ans中
+        function rang(num) { // 递归函数，生成 FFFF 到 TTTT 的排列
+            if (num>=len_val) { // 递归最底层，已经生成了 TF 全排列在数组 ans 中
                 table+="<tr>"
-                for(let i=0;i<len_val;i++){
-                    table+="<td class=\"tg-0lax\">";
-                    if(ans[i]==1){
+                for (var i=0; i<len_val; i++) {
+                    table+="<td>";
+                    if (ans[i]==1) {
                         table+="T";
                     }
-                    else{
+                    else {
                         table+="F";
                     }
                     table+="</td>";
@@ -110,13 +93,13 @@ $(function() {
         }
 
         //
-        var cal = new Array(); // 逻辑栈，储存运算符号
-        var num = new Array(); // 字母栈，储存字母
+        var cal = new Array(200).fill(0); // 逻辑栈，储存运算符号
+        var num = new Array(200).fill(0); // 字母栈，储存字母
         var top_num, top_cal; // 两个栈的栈顶位置
 
         function in_var(ch){ // 判断字符ch是否在字母表中，跟上面的in_value函数重复了
-            for(let i=0;i<len_val;i++){
-                if(value[i]==ch)return true;
+            for (let i=0;i<len_val;i++) {
+                if(value[i]==ch) return true;
             }
             return false;
         }
@@ -129,7 +112,7 @@ $(function() {
                 输入ch="r"
                 返回"1"
             */
-            for(let i=0;i<len_val;i++){
+            for (let i=0;i<len_val;i++) {
                 if(value[i]==ch){
                     if(ans[i]==1){
                         return "1";
@@ -180,32 +163,30 @@ $(function() {
             }
             top_cal--; // 运算栈栈顶位置-1
         }
-        function compare(a,b){ // 比较运算符a和b的优先级，a优于b返回true
-            if(b=="(") return true;
-            if(a=="~"&&b!="~") return true;
+        function compare(a, b) { // 比较运算符a和b的优先级，a优于b返回true
+            if (b=="(") return true;
+            if (a=="~"&&b!="~") return true;
             return false;
         }
 
-        function R(){ // 计算真值的函数，即求在当前排列下逻辑表达式的真假
-            init(cal, 200);
-            init(num, 200);
+        function R() { // 计算真值的函数，即求在当前排列下逻辑表达式的真假
             top_cal = -1; top_num = -1; // 栈和栈顶初始化
-            for(let i=0;i<len_input;i++){ // 遍历{"p","&","q"}
+            for (let i=0;i<len_input;i++) { // 遍历{"p","&","q"}
                 // 如果是字母，入字母栈
-                if(in_var(box[i]))num[++top_num]=find_var(box[i]);
-                else{ // 如果是运算符
-                    if(box[i]==")"){ // 右括号优先级最低，循环运算，直到运算栈的栈顶是左括号
+                if (in_var(box[i])) num[++top_num] = find_var(box[i]);
+                else { // 如果是运算符
+                    if (box[i]==")") { // 右括号优先级最低，循环运算，直到运算栈的栈顶是左括号
                         while (cal[top_cal]!="(") {
                             calculate(); // 取运算符栈顶进行运算
                         }top_cal--;
                     }
-                    else if(box[i]=="("){ // 左括号入运算栈
+                    else if(box[i]=="(") { // 左括号入运算栈
                         cal[++top_cal]=box[i];
                     }
-                    else if(top_cal==-1 || compare(box[i],cal[top_cal])){ // 如果当前运算符比栈顶运算符优先级高，入栈
+                    else if(top_cal==-1 || compare(box[i],cal[top_cal])) { // 如果当前运算符比栈顶运算符优先级高，入栈
                         cal[++top_cal]=box[i];
                     }
-                    else{
+                    else {
                         while(!(top_cal==-1 || compare(box[i],cal[top_cal]))){ // 如果不满足就取栈顶元素进行运算
                             calculate();
                         }
@@ -230,9 +211,9 @@ $(function() {
         
         len_input = box.length; // 3
 
-        for(let i=0;i<len_input;i++){ // 添加表头
-            if(is_alpha(box[i])&&(!in_value(box[i]))){
-                value[len_val]=box[i];
+        for (var i=0; i<len_input; i++) { // 添加表头
+            if (is_alpha(box[i]) && (!value.includes(box[i]))) {
+                value[len_val] = box[i];
                 len_val++;
                 table+="<th class=\"tg-l6li\">"
                 table=(table+box[i]);
@@ -246,11 +227,11 @@ $(function() {
         rang(0); // 递归，生成排列，计算真值，添加到表中
 
         if (flag==0) {
-            document.getElementById("truth-table").innerText="Invalid input"
+            $("#truth-table").text("Invalid input");
         }
         else {
             table+="</table>"
-            document.getElementById("truth-table").innerHTML=table;
+            $("#truth-table").html(table);
         }
     };
 
