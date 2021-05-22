@@ -51,8 +51,7 @@ $(function() {
     function truth_table(input) { // 真值表生成函数
         var value = new Array(50).fill(0);
         var flag = 1;
-        var table = "<table><thead><tr>";
-        // var table = $("<table></table>");
+        var table = $("<table></table>");
         var box, input, len_val = 0, len_input = 0;
         var operator = ["∧", "∨", "(", ")", "~", "→", "↔"];
 
@@ -64,15 +63,12 @@ $(function() {
 
         function rang(num) { // 递归函数，生成 FFFF 到 TTTT 的排列
             if (num>=len_val) { // 递归最底层，已经生成了 TF 全排列在数组 ans 中
-                table+="<tr>"
+                var row = $("<tr></tr>");
                 for (var i=0; i<len_val; i++) {
-                    table+="<td>";
-                    table+= (ans[i] == 1) ? "T" : "F";
-                    table+="</td>";
+                    row.append($("<td></td>").text((ans[i] == 1) ? "T" : "F"));
                 }
-                table += "<td>";
-                table += R() ? "T" : "F";
-                table += "</td></tr>"
+                row.append($("<td></td>").text(R() ? "T" : "F"));
+                table.append(row);
                 return;
             }
             ans[num]=0; rang(num+1);
@@ -158,30 +154,21 @@ $(function() {
         }
 
         $("#truth-table").html(undefined);
-        if(input=="") $("#truth-table").text("There is no input");
+        if (input=="") $("#truth-table").text("There is no input");
+
         box = [...input]; // ["p","&","q"]
-        
         len_input = box.length; // 3
 
         for (var i=0; i<len_input; i++) { // 添加表头
             if (is_alpha(box[i]) && (!value.includes(box[i]))) {
                 value[len_val] = box[i];
                 len_val++;
-                table += "<th>"
-                table = (table+box[i]);
-                table += "</th>"
+                table.append($("<th></th>").text(box[i]));
             }
         }
-        table+="<th>Result</th>"
-        table+="</tr></thead><tbody>" // add body
-
+        table.append($("<th></th>").text("Result"));
         rang(0); // 递归，生成排列，计算真值，添加到表中
-
-        if (flag==0) $("#truth-table").text("Invalid input");
-        else {
-            table+="</table>"
-            $("#truth-table").html(table);
-        }
+        (flag==0) ? $("#truth-table").text("Invalid input") : $("#truth-table").html(table);
     };
 
     var mubu = makeSVG("svg", {
@@ -214,9 +201,8 @@ $(function() {
     // 联结词按钮区
     var l_operators = ["∧", "∨", "~", "→", "↔"];
     for (var item in l_operators) {
-        var string = "<button></button>";
         divbutton.append(
-            $(string).text(l_operators[item]).attr({
+            $("<button></button>").text(l_operators[item]).attr({
                 class: "operator",
                 id: "operator"+l_operators[item]
             })
@@ -232,11 +218,11 @@ $(function() {
     );
 
     var l_items = [];
-    item = $("<button>Generate</button>").attr({
+    item = $("<button></button>").text("Generate").attr({
         id: "generate-button",
     }).click(function split() {
         var input = $("#input-variable")[0].value;
-        var box = [...input]; //["p","&","q"]
+        var box = [...input]; // ["p", "&", "q"]
         var box1 = [];
         var len = box.length;
         for (let i=0; i<len; i++) {
@@ -414,6 +400,5 @@ $(function() {
     });
     
     divinput.append(item);
-
     draggable("table");
 });
