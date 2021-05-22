@@ -51,8 +51,8 @@ $(function() {
     function truth_table(input) { // 真值表生成函数
         var value = new Array(50).fill(0);
         var flag = 1;
-        var table = "<table class=\"tg\"><thead><tr>";
-        // var table = $("<table></table>")
+        var table = "<table><thead><tr>";
+        // var table = $("<table></table>");
         var box, input, len_val = 0, len_input = 0;
         var operator = ["∧", "∨", "(", ")", "~", "→", "↔"];
 
@@ -67,146 +67,98 @@ $(function() {
                 table+="<tr>"
                 for (var i=0; i<len_val; i++) {
                     table+="<td>";
-                    if (ans[i]==1) {
-                        table+="T";
-                    }
-                    else {
-                        table+="F";
-                    }
+                    table+= (ans[i] == 1) ? "T" : "F";
                     table+="</td>";
                 }
-                table+="<td>";
-                if(R()==true){ // 在当前排列调用函数R，计算当前排列的真值
-                    table+="T";
-                }
-                else{
-                    table+="F";
-                }
-                table+="</td></tr>"
-                return ;
+                table += "<td>";
+                table += R() ? "T" : "F";
+                table += "</td></tr>"
+                return;
             }
-            ans[num]=0;
-            rang(num+1);
-            ans[num]=1;
-            rang(num+1); // 递归步骤
-            return;
+            ans[num]=0; rang(num+1);
+            ans[num]=1; rang(num+1); // 递归步骤
         }
 
-        //
         var cal = new Array(200).fill(0); // 逻辑栈，储存运算符号
         var num = new Array(200).fill(0); // 字母栈，储存字母
         var top_num, top_cal; // 两个栈的栈顶位置
 
-        function in_var(ch){ // 判断字符ch是否在字母表中，跟上面的in_value函数重复了
-            for (let i=0;i<len_val;i++) {
-                if(value[i]==ch) return true;
-            }
-            return false;
-        }
-        function find_var(ch){ // 计算真值的时候，找到字母ch对应的取值
+        function find_var(char) { // 计算真值的时候，找到字母ch对应的取值
             /*
-                例如value[]={p,q,r}
-                ans[]={1,0,1}
-                输入ch="q"
-                返回"0"
-                输入ch="r"
-                返回"1"
+                例如 value[]={p,q,r} ans[]={1,0,1}
+                输入 ch="q" 返回 "0"，输入 ch="r" 返回 "1"。
             */
-            for (let i=0;i<len_val;i++) {
-                if(value[i]==ch){
-                    if(ans[i]==1){
-                        return "1";
-                    }
-                    else{
-                        return "0";
-                    }
-                }
+            for (var i=0; i<len_val; i++) {
+                if (value[i]==char) return (ans[i]==1) ? "1" : "0";
             }
         }
 
-        function calculate(){ // 取运算栈的栈顶运算符进行运算
-            if(cal[top_cal]=="~"){
-                if(num[top_num]=="1"){
-                    num[top_num]="0";
-                }
-                else{
-                    num[top_num]="1";
-                }
+        function calculate() { // 取运算栈的栈顶运算符进行运算
+            if (cal[top_cal]=="~") {
+                num[top_num] = (num[top_num]=="1") ? "0" : "1";
             }
-            else if(cal[top_cal]=="∧"){
-                let ch1=num[top_num];
-                let ch2=num[top_num-1];
+            else if (cal[top_cal]=="∧") {
+                var ch1 = num[top_num], ch2 = num[top_num-1];
                 top_num--;
-                if(ch1=="1"&&ch2=="1") num[top_num]="1";
-                else num[top_num]="0";
+                num[top_num] = (ch1=="1" && ch2=="1") ? "1" : "0";
             }
-            else if(cal[top_cal]=="∨"){
-                let ch1=num[top_num];
-                let ch2=num[top_num-1];
+            else if (cal[top_cal]=="∨") {
+                var ch1 = num[top_num], ch2 = num[top_num-1];
                 top_num--;
-                if(ch1=="0"&&ch2=="0")num[top_num]="0";
-                else num[top_num]="1";
+                num[top_num] = (ch1=="0" && ch2=="0") ? "0" : "1";
             }
-            else if(cal[top_cal]=="→"){
-                let ch1=num[top_num];
-                let ch2=num[top_num-1];
+            else if (cal[top_cal]=="→") {
+                var ch1 = num[top_num], ch2 = num[top_num-1];
                 top_num--;
-                if(ch1=="0"&&ch2=="1")num[top_num]="0";
-                else num[top_num]="1";
+                num[top_num] = (ch1=="0" && ch2=="1") ? "0" : "1";
             }
-            else if(cal[top_cal]=="↔"){
-                let ch1=num[top_num];
-                let ch2=num[top_num-1];
+            else if (cal[top_cal]=="↔") {
+                var ch1 = num[top_num], ch2 = num[top_num-1];
                 top_num--;
-                if((ch1=="0"&&ch2=="0")||(ch1=="1"&&ch2=="1"))num[top_num]="1";
-                else num[top_num]="0";
+                num[top_num] = ((ch1=="0" && ch2=="0") || (ch1=="1"&&ch2=="1")) ? "1" : "0";
             }
             top_cal--; // 运算栈栈顶位置-1
         }
+
         function compare(a, b) { // 比较运算符a和b的优先级，a优于b返回true
             if (b=="(") return true;
-            if (a=="~"&&b!="~") return true;
+            if (a=="~" && b!="~") return true;
             return false;
         }
 
         function R() { // 计算真值的函数，即求在当前排列下逻辑表达式的真假
             top_cal = -1; top_num = -1; // 栈和栈顶初始化
-            for (let i=0;i<len_input;i++) { // 遍历{"p","&","q"}
+            for (let i=0; i<len_input; i++) { // 遍历{"p","&","q"}
                 // 如果是字母，入字母栈
-                if (in_var(box[i])) num[++top_num] = find_var(box[i]);
+                if (value.includes(box[i])) num[++top_num] = find_var(box[i]);
                 else { // 如果是运算符
                     if (box[i]==")") { // 右括号优先级最低，循环运算，直到运算栈的栈顶是左括号
                         while (cal[top_cal]!="(") {
                             calculate(); // 取运算符栈顶进行运算
-                        }top_cal--;
+                        } top_cal--;
                     }
-                    else if(box[i]=="(") { // 左括号入运算栈
+                    else if (box[i]=="(") { // 左括号入运算栈
                         cal[++top_cal]=box[i];
                     }
-                    else if(top_cal==-1 || compare(box[i],cal[top_cal])) { // 如果当前运算符比栈顶运算符优先级高，入栈
+                    else if (top_cal==-1 || compare(box[i],cal[top_cal])) { // 如果当前运算符比栈顶运算符优先级高，入栈
                         cal[++top_cal]=box[i];
                     }
                     else {
-                        while(!(top_cal==-1 || compare(box[i],cal[top_cal]))){ // 如果不满足就取栈顶元素进行运算
+                        while (!(top_cal==-1 || compare(box[i],cal[top_cal]))) { // 如果不满足就取栈顶元素进行运算
                             calculate();
                         }
-                        cal[++top_cal]=box[i];
+                        cal[++top_cal] = box[i];
                     }
                 }
             }
-            while(top_cal!=-1){
-                calculate();
-            }
-            if(!(top_num==0&&top_cal==-1))flag=0; // flag的设置为了判断非法输入
-            if(num[0]=="1")return true; // 01栈最后的栈顶值即为计算的真值
+            while (top_cal!=-1) calculate();
+            if (!(top_num==0&&top_cal==-1)) flag = 0; // flag的设置为了判断非法输入
+            if (num[0]=="1") return true; // 01栈最后的栈顶值即为计算的真值
             return false;
         }
 
-        document.getElementById("truth-table").innerHTML=undefined;
-        if(input==""){
-            document.getElementById("truth-table").innerText="There is no input";
-            return;
-        }
+        $("#truth-table").html(undefined);
+        if(input=="") $("#truth-table").text("There is no input");
         box = [...input]; // ["p","&","q"]
         
         len_input = box.length; // 3
@@ -215,20 +167,17 @@ $(function() {
             if (is_alpha(box[i]) && (!value.includes(box[i]))) {
                 value[len_val] = box[i];
                 len_val++;
-                table+="<th class=\"tg-l6li\">"
-                table=(table+box[i]);
-                table+="</th>"
+                table += "<th>"
+                table = (table+box[i]);
+                table += "</th>"
             }
-            
         }
         table+="<th>Result</th>"
         table+="</tr></thead><tbody>" // add body
 
         rang(0); // 递归，生成排列，计算真值，添加到表中
 
-        if (flag==0) {
-            $("#truth-table").text("Invalid input");
-        }
+        if (flag==0) $("#truth-table").text("Invalid input");
         else {
             table+="</table>"
             $("#truth-table").html(table);
@@ -374,10 +323,7 @@ $(function() {
                 y: parseInt($(temp[0]).attr("y")) + 20,
                 fill: "#000",
             })).text(raw_text);
-            console.log(raw_text)
-            mubu.append(text);
-            mubu.append(line);
-            mubu.append(rectbox);
+            mubu.append(text, line, rectbox);
         }
         else if (l_items.length == 2 && e.target.id != "operator~") {
             var second = l_items.pop();
@@ -469,6 +415,5 @@ $(function() {
     
     divinput.append(item);
 
-    draggable("table.tg");
+    draggable("table");
 });
-
