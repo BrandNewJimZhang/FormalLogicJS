@@ -95,3 +95,45 @@ table th, table td {
 div#hidden-container {
     display: none;
 }
+
+div.bubble {
+    position: relative;
+    right: 100%;
+    top: -1.6em;
+    display: flex;
+}
+
+div.round-rect {
+    float: right;
+    background-color: #fff;
+    word-break: keep-all;
+    padding: 14px 16px;
+    border: #000 solid 1px;
+    border-radius: 7px;
+    z-index: 1;
+}
+
+div.bubble-triangle {
+    left: -1px;
+    height: 0px;
+    width: 0px;
+    top: 0.8em;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent #000;
+    position: relative;
+    z-index: 2;
+}
+
+div.bubble-triangle::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+    top: -5px;
+    left: -6px;
+    z-index: 2;
+}
