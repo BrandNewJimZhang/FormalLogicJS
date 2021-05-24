@@ -48,6 +48,22 @@ $(function () {
         });
     };
 
+    var result = new Array();
+
+    function is_same(arr1,arr2) {
+        let len1=arr1.length
+        let len2=arr2.length
+        if (len1 != len2) {
+            return false
+        }
+        for (let i=0;i<len1;i++) {
+            if (arr1[i]!=arr2[i]) {
+                return false
+            }
+        }
+        return true
+    }
+
     function truth_table(input) { // 真值表生成函数
         var value = new Array(50).fill(0);
         var flag = 1;
@@ -68,7 +84,13 @@ $(function () {
                 for (var i = 0; i < len_val; i++) {
                     row.append($("<td></td>").text((ans[i] == 1) ? "T" : "F"));
                 }
-                row.append($("<td></td>").text(R() ? "T" : "F"));
+                result.push(R() ? "T" : "F");
+                row.append($("<td></td>").append(
+                    $("<input>").attr({
+                        type: "text",
+                        class: "truth-table-text"
+                    })
+                ));
                 table.append(row);
                 return;
             }
@@ -168,9 +190,31 @@ $(function () {
                 table.append($("<th></th>").text(box[i]));
             }
         }
-        table.append($("<th></th>").text("Result"));
+        table.append($("<th></th>").text($("#hidden-container").text()));
         rang(0); // 递归，生成排列，计算真值，添加到表中
-        (flag == 0) ? $("#truth-table").text("Invalid input"): $("#truth-table").html(table);
+        if (flag == 0) $("#truth-table").text("Invalid input")
+        else {
+            $("#truth-table").append(
+                table,
+                $("<button></button>").attr({id: "check-button"}).text("Check").click(function () {
+                    var user_ans = new Array();
+                    
+                    $("input.truth-table-text").each(function () {
+                        user_ans.push($(this).val());
+                    });
+                    $("#truth-table-img").last().remove();
+                    $(this).after($("<div></div>").attr({id: "truth-table-img"}).append(
+                        $("<img>").attr({
+                            src: is_same(result, user_ans) ? "img/true.svg" :
+                            "img/false.svg",
+                            height: 27,
+                            width: 27,
+                        }))
+                    ); 
+                    $("#truth-table-img").width($("td")[2].offsetWidth - 4);            
+                })
+            );
+        }
     };
 
     var mubu = makeSVG("svg", {
@@ -279,7 +323,8 @@ $(function () {
     $(".operator").click(function (e) {
         if (l_items.length == 1 && e.target.id == "operator~") {
             var temp = l_items.pop()
-            l_items.push("(~" + temp[1] + ")")
+            var raw_text = "(~" + temp[1] + ")"
+            l_items.push(raw_text)
             var line = makeSVG("line", {
                 x1: parseInt($(temp[0]).attr("x")) + parseInt($(temp[0]).attr("width")),
                 x2: parseInt($(temp[0]).attr("x")) + parseInt($(temp[0]).attr("width")) + 100,
@@ -287,7 +332,7 @@ $(function () {
                 y2: parseInt($(temp[0]).attr("y")) + parseInt($(temp[0]).attr("height") / 2),
                 stroke: "#000"
             })
-            var raw_text = "(~" + temp[1] + ")";
+            $("#hidden-container").text(raw_text);
             var text = $(makeSVG("text", {
                 x: 15,
                 y: 40 * item + 30,
