@@ -51,32 +51,28 @@ $(function () {
     var result = new Array();
 
     function is_same(arr1,arr2) {
-        let len1=arr1.length
-        let len2=arr2.length
-        if (len1 != len2) {
-            return false
+        let len1 = arr1.length;
+        let len2 = arr2.length;
+        if (len1 != len2) return false;
+        for (let i=0; i<len1; i++) {
+            if (arr1[i] != arr2[i]) return false;
         }
-        for (let i=0;i<len1;i++) {
-            if (arr1[i]!=arr2[i]) {
-                return false
-            }
-        }
-        return true
+        return true;
     }
 
     function truth_table(input) { // 真值表生成函数
         var value = new Array(50).fill(0);
         var flag = 1;
         var table = $("<table></table>");
-        var box, input, len_val = 0,
-            len_input = 0;
+        var box, input, len_val = 0, len_input = 0;
         var operator = ["∧", "∨", "(", ")", "~", "→", "↔"];
+        var ans = new Array(50).fill(0); // 储存每一个排列
 
         function is_alpha(char) { // 判断字符是否是字母 p，q，r 等
             return operator.includes(char) ? false : true;
         }
 
-        var ans = new Array(50).fill(0); // 储存每一个排列
+        var iter = 0;
 
         function rang(num) { // 递归函数，生成 FFFF 到 TTTT 的排列
             if (num >= len_val) { // 递归最底层，已经生成了 TF 全排列在数组 ans 中
@@ -85,11 +81,22 @@ $(function () {
                     row.append($("<td></td>").text((ans[i] == 1) ? "T" : "F"));
                 }
                 result.push(R() ? "T" : "F");
+                iter ++;
                 row.append($("<td></td>").append(
                     $("<input>").attr({
-                        type: "text",
-                        class: "truth-table-text"
-                    })
+                        type: "radio",
+                        class: "truth-radiobox",
+                        value: "T",
+                        name: "truth" + iter,
+                    }),
+                    $("<label></label>").attr({for: "T"}).text("T"),
+                    $("<input>").attr({
+                        type: "radio",
+                        class: "truth-radiobox",
+                        value: "F",
+                        name: "truth" + iter,
+                    }),
+                    $("<label></label>").attr({for: "F"}).text("F"),
                 ));
                 table.append(row);
                 return;
@@ -137,11 +144,11 @@ $(function () {
                     ch2 = num[top_num - 1];
                 top_num--;
                 num[top_num] = ((ch1 == "0" && ch2 == "0") || (ch1 == "1" && ch2 == "1")) ? "1" : "0";
-            }
-            top_cal--; // 运算栈栈顶位置-1
+            };
+            top_cal--; // 运算栈栈顶位置 -1
         }
 
-        function compare(a, b) { // 比较运算符a和b的优先级，a优于b返回true
+        function compare(a, b) { // 比较运算符 a 和 b 的优先级，a 优于 b 返回 true
             if (b == "(") return true;
             if (a == "~" && b != "~") return true;
             return false;
@@ -199,7 +206,7 @@ $(function () {
                 $("<button></button>").attr({id: "check-button"}).text("Check").click(function () {
                     var user_ans = new Array();
                     
-                    $("input.truth-table-text").each(function () {
+                    $("input.truth-radiobox:checked").each(function () {
                         user_ans.push($(this).val());
                     });
                     $("#truth-table-img").last().remove();
@@ -210,10 +217,12 @@ $(function () {
                             height: 27,
                             width: 27,
                         }))
-                    ); 
-                    $("#truth-table-img").width($("td")[2].offsetWidth - 4);            
+                    );
+                    $("#truth-table-img").width($("td").eq(len_val).outerWidth());            
                 })
             );
+            $("button#check-button").width(($("td").eq(0).outerWidth()+10)*len_val);
+            console.log($("td").eq(0).outerWidth()*len_val, 'success');
         }
     };
 
@@ -266,8 +275,9 @@ $(function () {
     var l_items = [];
     item = $("<button></button>").text("Generate").attr({
         id: "generate-button",
+        class: "wide-button"
     }).click(function split() {
-        var input = $("#input-variable")[0].value;
+        var input = $("#input-variable").val();
         var box = [...input]; // ["p", "&", "q"]
         var box1 = [];
         var len = box.length;
@@ -322,16 +332,16 @@ $(function () {
     // TODO #3 简化框图的宽高计算
     $(".operator").click(function (e) {
         if (l_items.length == 1 && e.target.id == "operator~") {
-            var temp = l_items.pop()
-            var raw_text = "(~" + temp[1] + ")"
-            l_items.push(raw_text)
+            var temp = l_items.pop();
+            var raw_text = "(~" + temp[1] + ")";
+            l_items.push(raw_text);
             var line = makeSVG("line", {
                 x1: parseInt($(temp[0]).attr("x")) + parseInt($(temp[0]).attr("width")),
                 x2: parseInt($(temp[0]).attr("x")) + parseInt($(temp[0]).attr("width")) + 100,
                 y1: parseInt($(temp[0]).attr("y")) + parseInt($(temp[0]).attr("height") / 2),
                 y2: parseInt($(temp[0]).attr("y")) + parseInt($(temp[0]).attr("height") / 2),
                 stroke: "#000"
-            })
+            });
             $("#hidden-container").text(raw_text);
             var text = $(makeSVG("text", {
                 x: 15,
@@ -378,7 +388,7 @@ $(function () {
                 y1: parseInt($(second[0]).attr("y")) + parseInt($(second[0]).attr("height") / 2),
                 y2: parseInt($(second[0]).attr("y")) + parseInt($(second[0]).attr("height") / 2),
                 stroke: "#000"
-            })
+            });
             var line_together_h = makeSVG("line", {
                 x1: Math.max(
                     parseInt($(first[0]).attr("x")) + parseInt($(first[0]).attr("width")) + 40,
@@ -389,7 +399,7 @@ $(function () {
                 y1: ((parseInt($(first[0]).attr("y")) + parseInt($(first[0]).attr("height") / 2)) + (parseInt($(second[0]).attr("y")) + parseInt($(second[0]).attr("height") / 2))) / 2,
                 y2: ((parseInt($(first[0]).attr("y")) + parseInt($(first[0]).attr("height") / 2)) + (parseInt($(second[0]).attr("y")) + parseInt($(second[0]).attr("height") / 2))) / 2,
                 stroke: "#000"
-            })
+            });
             var line_together_v = makeSVG("line", {
                 x1: Math.max(
                     parseInt($(first[0]).attr("x")) + parseInt($(first[0]).attr("width")) + 40,
@@ -436,16 +446,42 @@ $(function () {
         };
     });
 
-    item = $("<button>Generate truth table</button>").attr({
-        id: "truth-table-button",
-    }).click(function () {
-        var text = $("#hidden-container").text();
-        truth_table(text);
-        $("div#truth-table").fadeIn(800);
-    });
+    // TODO 历史记录
+    divinput.append(
+        $("<button></button>").text("Clear").attr({
+            id: "clear-button",
+            class: "wide-button",
+        }).click(function () {
+            $("line, rect, text").remove();
+            $("div#truth-table").html("").css("display", "none");
+        }),
+        $("<button></button>").text("Generate truth table").attr({
+            id: "truth-table-button",
+            class: "wide-button",
+        }).click(function () {
+            $("div#truth-table").html("");
+            truth_table($("#hidden-container").text());
+            $("div#truth-table").fadeIn(600);
+        })
+    );
 
-    divinput.append(item);
-    draggable("table");
+    $("#clear-button").hover(function () {
+        $(this).append(
+            $("<div></div>").attr({
+                class: "bubble",
+            }).css("display", "none").append(
+                $("<div></div>").attr({
+                    class: "round-rect"
+                }).text("点击清空"),
+                $("<div></div>").attr({
+                    class: "bubble-triangle"
+                }),
+            ).fadeIn(200)
+        );
+    },
+    function () {
+        $(this).find("div.bubble").last().fadeOut(200);
+    });
 
     $("#truth-table-button").hover(function () {
         $(this).append(
