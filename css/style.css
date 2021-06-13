@@ -36,7 +36,7 @@ div#input-section > div#operator-button {
     padding-bottom: 1em;
 }
 
-div#input-section > div#operator-button > button.operator, div#input-section > button#generate-button, div#input-section > button#truth-table-button {
+div#input-section > div#operator-button > button.operator, div#input-section > button.wide-button {
     height: 2em;
     width: -webkit-fill-available;
     font-family: Georgia, "Times New Roman", Serif;
@@ -52,7 +52,7 @@ div#input-section > input#input-variable {
     font-size: 18px;
 }
 
-div#input-section > button#generate-button, div#input-section > button#truth-table-button {
+div#input-section > button.wide-button {
     margin-top: .6em;
 }
 
@@ -104,7 +104,6 @@ div.bubble {
 }
 
 div.round-rect {
-    float: right;
     background-color: #fff;
     word-break: keep-all;
     padding: 14px 16px;
@@ -138,13 +137,8 @@ div.bubble-triangle::after {
     z-index: 2;
 }
 
-input.truth-table-text {
-    border: 0.5px #aaa solid;
-    width: 4em;
-    padding: 4px 4px;
-    font-family: Georgia;
-    font-size: 16px;
-    text-align: center;
+input.truth-radiobox {
+    margin: 0px 4px 3px;
 }
 
 div#truth-table-img {
@@ -156,10 +150,9 @@ div#truth-table-img {
 }
 
 button#check-button {
-    margin-bottom: 6px;
+    margin: 0 2px 6px 0;
     font-family: Georgia, Times, serif;
     font-size: 16px;
-    width: 3.5em;
     text-align: center;
     padding: 4px 0;
     height: 1.8em;

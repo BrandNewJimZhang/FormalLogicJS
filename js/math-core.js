@@ -349,26 +349,26 @@ $(function () {
                 y: 40 * item + 30,
                 fill: "transparent",
             })).text(box1[item]);
-            mubu.append(text);
-            mubu.append($(makeSVG("rect", {
-                x: 10,
-                y: 40 * item + 10,
-                width: text.get(0).getBBox().width + 10,
-                height: 30,
-                stroke: "#aaa",
-                fill: "#fff",
-                rx: 5,
-                ry: 5,
-                text: box1[item],
-            })));
-            var text = $(makeSVG("text", {
-                x: 15,
-                y: 40 * item + 30,
-                fill: "#000",
-            })).text(box1[item]);
-            mubu.append(text);
-
-        }
+            mubu.append(
+                text,
+                $(makeSVG("rect", {
+                    x: 10,
+                    y: 40 * item + 10,
+                    width: text.get(0).getBBox().width + 10,
+                    height: 30,
+                    stroke: "#aaa",
+                    fill: "#fff",
+                    rx: 5,
+                    ry: 5,
+                    text: box1[item],
+                })),
+                $(makeSVG("text", {
+                    x: 15,
+                    y: 40 * item + 30,
+                    fill: "#000",
+                })).text(box1[item])
+            )
+        };
     });
     divinput.append(item);
 
@@ -377,10 +377,10 @@ $(function () {
             $("rect").attr("stroke", "#aaa");
             l_items = [];
         } else {
-            if ($(e.target).attr("stroke") == "red") {
+            if ($(e.target).attr("stroke") === "#f00") {
                 $(e.target).attr("stroke", "#aaa");
             } else {
-                $(e.target).attr("stroke", "red");
+                $(e.target).attr("stroke", "#f00");
                 l_items.push([e.target, $(e.target).attr("text")])
             }
         }
@@ -390,6 +390,7 @@ $(function () {
     $(".operator").click(function (e) {
         if (l_items.length == 1 && e.target.id == "operator~") {
             var temp = l_items.pop();
+            console.log(temp);
             var raw_text = "(~" + temp[1] + ")";
             l_items.push(raw_text);
             var line = makeSVG("line", {
