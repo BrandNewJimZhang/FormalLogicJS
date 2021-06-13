@@ -176,7 +176,7 @@ $(function () {
             if (num[0] == "1") return true; // 01栈最后的栈顶值即为计算的真值
             return false;
         }
-
+        
         $("#truth-table").html(undefined);
         if (input == "") $("#truth-table").text("There is no input");
 
@@ -241,6 +241,40 @@ $(function () {
     };
 
     // 用户控制区布局
+
+    //随机数函数，返回不超过max的非负整数
+    function rand(max){
+        return parseInt(Math.random(1)*max);
+    }
+    var vari=['p','q','r','s','t'];
+    var vari_num=2;//变元个数
+    var operator = ["∧", "∨", "~", "→", "↔"];
+    //随机表达式
+    function equation(){
+        var vnum=vari_num;//
+        var result="p";
+        for(let i=0;i<vnum-1;i++){
+            let temp=operator[rand(5)];
+            if(temp=='~'){
+                i--;
+                result=temp+result;
+            }
+            else
+            {
+                let tempvar=vari[rand(5)];
+                let tempnum=rand(2);
+                if(tempnum){
+                    result=result+temp+tempvar;
+                }
+                else{
+                    result=tempvar+temp+result;
+                }
+            }
+            result='('+result+')';
+        }
+        return result;
+    }
+
     var divinput = $("div#input-section");
     var divbutton = $("<div></div>").attr("id", "operator-button");
 
@@ -254,9 +288,35 @@ $(function () {
             })
         );
     };
+    
+
+    /**
+     * 
+     * 
+     * 
+     * cbd changed
+     * 
+     * 
+     */
+    //problem-description
+    var problem1=$("<div></div>").attr(
+        "id","problem-text"
+    )
+    problem1.append(
+        $("<h2></h2>").text("Problem2").attr({
+            id:"temp"
+        }),
+        $("<p></p>").text("请判断以下两个公式是否逻辑等值").attr({
+            id:"temp"
+        }),
+        $("<p></p>").text(equation()),
+        $("<p></p>").text(equation()),
+        $("<br>")
+    )
 
     // 输入变元
-    divinput.append(divbutton,
+    divinput.append(problem1,
+        divbutton,
         $("<input>").attr({
             id: "input-variable",
             type: "text",
@@ -466,4 +526,3 @@ $(function () {
     });
 
 });
-
