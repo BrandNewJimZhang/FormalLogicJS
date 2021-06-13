@@ -50,11 +50,11 @@ $(function () {
 
     var result = new Array();
 
-    function is_same(arr1,arr2) {
+    function is_same(arr1, arr2) {
         let len1 = arr1.length;
         let len2 = arr2.length;
         if (len1 != len2) return false;
-        for (let i=0; i<len1; i++) {
+        for (let i = 0; i < len1; i++) {
             if (arr1[i] != arr2[i]) return false;
         }
         return true;
@@ -64,7 +64,8 @@ $(function () {
         var value = new Array(50).fill(0);
         var flag = 1;
         var table = $("<table></table>");
-        var box, input, len_val = 0, len_input = 0;
+        var box, input, len_val = 0,
+            len_input = 0;
         var operator = ["∧", "∨", "(", ")", "~", "→", "↔"];
         var ans = new Array(50).fill(0); // 储存每一个排列
 
@@ -81,7 +82,7 @@ $(function () {
                     row.append($("<td></td>").text((ans[i] == 1) ? "T" : "F"));
                 }
                 result.push(R() ? "T" : "F");
-                iter ++;
+                iter++;
                 row.append($("<td></td>").append(
                     $("<input>").attr({
                         type: "radio",
@@ -89,14 +90,18 @@ $(function () {
                         value: "T",
                         name: "truth" + iter,
                     }),
-                    $("<label></label>").attr({for: "T"}).text("T"),
+                    $("<label></label>").attr({
+                        for: "T"
+                    }).text("T"),
                     $("<input>").attr({
                         type: "radio",
                         class: "truth-radiobox",
                         value: "F",
                         name: "truth" + iter,
                     }),
-                    $("<label></label>").attr({for: "F"}).text("F"),
+                    $("<label></label>").attr({
+                        for: "F"
+                    }).text("F"),
                 ));
                 table.append(row);
                 return;
@@ -183,7 +188,7 @@ $(function () {
             if (num[0] == "1") return true; // 01栈最后的栈顶值即为计算的真值
             return false;
         }
-        
+
         $("#truth-table").html(undefined);
         if (input == "") $("#truth-table").text("There is no input");
 
@@ -203,26 +208,28 @@ $(function () {
         else {
             $("#truth-table").append(
                 table,
-                $("<button></button>").attr({id: "check-button"}).text("Check").click(function () {
+                $("<button></button>").attr({
+                    id: "check-button"
+                }).text("Check").click(function () {
                     var user_ans = new Array();
-                    
+
                     $("input.truth-radiobox:checked").each(function () {
                         user_ans.push($(this).val());
                     });
                     $("#truth-table-img").last().remove();
-                    $(this).after($("<div></div>").attr({id: "truth-table-img"}).append(
+                    $(this).after($("<div></div>").attr({
+                        id: "truth-table-img"
+                    }).append(
                         $("<img>").attr({
-                            src: is_same(result, user_ans) ? "img/true.svg" :
-                            "img/false.svg",
+                            src: is_same(result, user_ans) ? "img/true.svg" : "img/false.svg",
                             height: 27,
                             width: 27,
-                        }))
-                    );
-                    $("#truth-table-img").width($("td").eq(len_val).outerWidth());            
+                        })));
+                    $("#truth-table-img").width($("td").eq(len_val).outerWidth());
                 })
             );
-            $("button#check-button").width(($("td").eq(0).outerWidth()+10)*len_val);
-            console.log($("td").eq(0).outerWidth()*len_val, 'success');
+            $("button#check-button").width(($("td").eq(0).outerWidth() + 10) * len_val);
+            console.log($("td").eq(0).outerWidth() * len_val, 'success');
         }
     };
 
@@ -252,34 +259,31 @@ $(function () {
     // 用户控制区布局
 
     //随机数函数，返回不超过max的非负整数
-    function rand(max){
-        return parseInt(Math.random(1)*max);
+    function rand(max) {
+        return parseInt(Math.random(1) * max);
     }
-    var vari=['p','q','r','s','t'];
-    var vari_num=2;//变元个数
+    var vari = ['p', 'q', 'r', 's', 't'];
+    var vari_num = 2; //变元个数
     var operator = ["∧", "∨", "~", "→", "↔"];
     //随机表达式
-    function equation(){
-        var vnum=vari_num;//
-        var result="p";
-        for(let i=0;i<vnum-1;i++){
-            let temp=operator[rand(5)];
-            if(temp=='~'){
+    function equation() {
+        var vnum = vari_num; //
+        var result = "p";
+        for (let i = 0; i < vnum - 1; i++) {
+            let temp = operator[rand(5)];
+            if (temp == '~') {
                 i--;
-                result=temp+result;
-            }
-            else
-            {
-                let tempvar=vari[rand(5)];
-                let tempnum=rand(2);
-                if(tempnum){
-                    result=result+temp+tempvar;
-                }
-                else{
-                    result=tempvar+temp+result;
+                result = temp + result;
+            } else {
+                let tempvar = vari[rand(5)];
+                let tempnum = rand(2);
+                if (tempnum) {
+                    result = result + temp + tempvar;
+                } else {
+                    result = tempvar + temp + result;
                 }
             }
-            result='('+result+')';
+            result = '(' + result + ')';
         }
         return result;
     }
@@ -297,26 +301,19 @@ $(function () {
             })
         );
     };
-    
 
-    /**
-     * 
-     * 
-     * 
-     * cbd changed
-     * 
-     * 
-     */
-    //problem-description
-    var problem1=$("<div></div>").attr(
-        "id","problem-text"
+
+    /* 请判断以下两个公式是否逻辑等值 */
+    // problem-description
+    var problem1 = $("<div></div>").attr(
+        "id", "problem-text"
     )
     problem1.append(
         $("<h2></h2>").text("Problem2").attr({
-            id:"temp"
+            id: "temp"
         }),
         $("<p></p>").text("请判断以下两个公式是否逻辑等值").attr({
-            id:"temp"
+            id: "temp"
         }),
         $("<p></p>").text(equation()),
         $("<p></p>").text(equation()),
@@ -526,39 +523,39 @@ $(function () {
     );
 
     $("#clear-button").hover(function () {
-        $(this).append(
-            $("<div></div>").attr({
-                class: "bubble",
-            }).css("display", "none").append(
+            $(this).append(
                 $("<div></div>").attr({
-                    class: "round-rect"
-                }).text("点击清空"),
-                $("<div></div>").attr({
-                    class: "bubble-triangle"
-                }),
-            ).fadeIn(200)
-        );
-    },
-    function () {
-        $(this).find("div.bubble").last().fadeOut(200);
-    });
+                    class: "bubble",
+                }).css("display", "none").append(
+                    $("<div></div>").attr({
+                        class: "round-rect"
+                    }).text("点击清空"),
+                    $("<div></div>").attr({
+                        class: "bubble-triangle"
+                    }),
+                ).fadeIn(200)
+            );
+        },
+        function () {
+            $(this).find("div.bubble").last().fadeOut(200);
+        });
 
     $("#truth-table-button").hover(function () {
-        $(this).append(
-            $("<div></div>").attr({
-                class: "bubble",
-            }).css("display", "none").append(
+            $(this).append(
                 $("<div></div>").attr({
-                    class: "round-rect"
-                }).text("点击生成真值表"),
-                $("<div></div>").attr({
-                    class: "bubble-triangle"
-                }),
-            ).fadeIn(200)
-        );
-    },
-    function () {
-        $(this).find("div.bubble").last().fadeOut(200);
-    });
+                    class: "bubble",
+                }).css("display", "none").append(
+                    $("<div></div>").attr({
+                        class: "round-rect"
+                    }).text("点击生成真值表"),
+                    $("<div></div>").attr({
+                        class: "bubble-triangle"
+                    }),
+                ).fadeIn(200)
+            );
+        },
+        function () {
+            $(this).find("div.bubble").last().fadeOut(200);
+        });
 
 });
